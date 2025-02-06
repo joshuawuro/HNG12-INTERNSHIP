@@ -58,3 +58,29 @@ function renderColorOptions() {
     colorOptions.appendChild(button);
   });
 }
+
+function handleGuess(selectedColor) {
+  if (selectedColor === targetColor) {
+    correctGuesses++;
+    score++;
+    showPopup(`Correct!`, "#33FF57", false); // Show "Correct!" popup without retry button
+    if (correctGuesses === totalRounds) {
+      setTimeout(() => {
+        showPopup(`Congratulations! You won!`, "#33FF57", true); // Show win message with retry button
+        correctGuesses = 0;
+        score = 0;
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        targetColor = getRandomColor();
+        colorBox.style.backgroundColor = targetColor;
+        renderColorOptions();
+      }, 1000); // Wait 1 second before showing the next round
+    }
+  } else {
+    showPopup(`Wrong! Try again.`, "#FF5733", true); // Show "Try again" popup with retry button
+    score = 0;
+    correctGuesses = 0;
+  }
+  scoreDisplay.textContent = `Score: ${score}`;
+}
