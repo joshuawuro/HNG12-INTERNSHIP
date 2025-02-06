@@ -84,3 +84,33 @@ function handleGuess(selectedColor) {
   }
   scoreDisplay.textContent = `Score: ${score}`;
 }
+
+function showPopup(message, color, showRetry) {
+  popupMessage.innerHTML = message
+    .split("\n")
+    .map((line) => `<div>${line}</div>`)
+    .join("");
+  popupMessage.style.color = color;
+  retryButton.style.display = showRetry ? "block" : "none"; // Show/hide retry button
+  popupCard.style.display = "flex";
+
+  if (!showRetry) {
+    setTimeout(() => {
+      popupCard.style.display = "none"; // Auto-close "Correct!" popup after 1 second
+    }, 1000);
+  }
+}
+
+function resetGame() {
+  targetColor = getRandomColor();
+  colorBox.style.backgroundColor = targetColor;
+  score = 0;
+  correctGuesses = 0;
+  scoreDisplay.textContent = `Score: ${score}`;
+  renderColorOptions();
+  popupCard.style.display = "none";
+}
+
+closePopup.addEventListener("click", () => {
+  popupCard.style.display = "none";
+});
