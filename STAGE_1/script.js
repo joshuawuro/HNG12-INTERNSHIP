@@ -114,3 +114,13 @@ function resetGame() {
 closePopup.addEventListener("click", () => {
   popupCard.style.display = "none";
 });
+
+retryButton.addEventListener("click", () => {
+  resetGame();
+  popupCard.style.display = "none";
+});
+
+newGameButton.addEventListener("click", resetGame);
+
+// Initialize game
+resetGame();
