@@ -11,3 +11,18 @@ let targetColor;
 let score = 0;
 let correctGuesses = 0;
 const totalRounds = 10;
+
+const colors = [
+  "#FF5733",
+  "#33FF57",
+  "#3357FF",
+  "#FF33A1",
+  "#A133FF",
+  "#33FFF5",
+  "#FFC300",
+  "#C70039",
+  "#900C3F",
+  "#581845",
+  "#1A5276",
+  "#1E8449",
+];
