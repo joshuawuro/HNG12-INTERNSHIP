@@ -13,10 +13,11 @@ The repository is organized based on the different tasks assigned during the int
 📦 HNG-Internship  
  ┣ 📂 Task-1  
  ┃ ┣ 📜 README.md  
+ ┃ ┣ 📜 task1.hmtl  
  ┃ ┣ 📜 task1.js  
  ┣ 📂 Task-2  
  ┃ ┣ 📜 README.md  
- ┃ ┣ 📜 task2.py  
+ ┃ ┣ 📜 task2.js  
  ┣ 📂 Task-3  
  ┃ ┣ 📜 README.md  
  ┃ ┣ 📜 task3.html  
