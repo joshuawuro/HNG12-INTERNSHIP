@@ -37,3 +37,24 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
+
+function generateColorOptions() {
+  const options = [targetColor];
+  while (options.length < 6) {
+    const color = getRandomColor();
+    if (!options.includes(color)) options.push(color);
+  }
+  shuffleArray(options);
+  return options;
+}
+
+function renderColorOptions() {
+  colorOptions.innerHTML = "";
+  const options = generateColorOptions();
+  options.forEach((color) => {
+    const button = document.createElement("button");
+    button.style.backgroundColor = color;
+    button.addEventListener("click", () => handleGuess(color));
+    colorOptions.appendChild(button);
+  });
+}
