@@ -115,3 +115,20 @@ h1 {
 .popup-message div {
   margin: 5px 0;
 }
+
+.retry-button {
+  display: none; /* Hidden by default */
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ff4d4d;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.retry-button:hover {
+  background-color: #cc0000;
+}
