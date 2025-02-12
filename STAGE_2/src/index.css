@@ -5,4 +5,12 @@
 @theme {
   --font-roboto: "Roboto", sans-serif;
   --font-roadrage: "Road Rage";
+
+  --color-white: #ffffff;
+  --color-dark: #0a0c11;
+  --color-green: #052f35;
+  --color-lightgreen: #05252c;
+  --color-blue: #0e464f;
+  --color-lightblue: #197686;
+  --color-lemon: #d5ea00;
 }
