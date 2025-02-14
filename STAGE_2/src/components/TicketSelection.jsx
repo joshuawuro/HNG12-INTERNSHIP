@@ -8,8 +8,7 @@ import StepNavigation from "./StepNavigation";
 const TicketSelection = ({ onNext, onCancel }) => {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [error, setError] = useState(false);
-  const [isSelectionComplete, setIsSelectionComplete] = useState(false);
+  const [error, setError] = useState("");
 
   const ticketOptions = [
     { id: 1, type: "Free", price: 0, access: "REGULAR ACCESS", available: 20 },
@@ -18,28 +17,23 @@ const TicketSelection = ({ onNext, onCancel }) => {
   ];
 
   const handleNext = () => {
-    if (!selectedTicket) {
-      setError(true);
+    if (!selectedTicket || quantity < 1) {
+      setError("Please select a ticket type and the number of tickets.");
     } else {
-      setError(false);
-      setIsSelectionComplete(true);
-      onNext();
+      setError(""); // Clear any previous errors
+      onNext(); // Proceed to the next step
     }
   };
 
   const handleCancel = () => {
     setSelectedTicket(null);
     setQuantity(1);
-    setError(false);
+    setError("");
     onCancel();
   };
 
   return (
-    <div
-      className={`bg-lighterblue border-1 border-blue text-white p-6 rounded-2xl max-w-[500px] mx-auto ${
-        isSelectionComplete ? "opacity-50 pointer-events-none" : ""
-      }`}
-    >
+    <div className="bg-lighterblue border-1 border-blue text-white p-6 rounded-2xl max-w-[500px] mx-auto">
       <ProgressBar />
 
       <div className="bg-ticketsel p-3 rounded-xl">
@@ -57,15 +51,13 @@ const TicketSelection = ({ onNext, onCancel }) => {
               />
             ))}
           </div>
-          {error && (
-            <p className="text-red-500 text-sm mt-2">
-              Please select a ticket type.
-            </p>
-          )}
         </div>
 
         <h3 className="text-sm mt-4 mb-2">Number of Tickets</h3>
         <TicketQuantitySelector quantity={quantity} onChange={setQuantity} />
+
+        {/* Display error message if validation fails */}
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
         <StepNavigation onNext={handleNext} onCancel={handleCancel} />
       </div>
