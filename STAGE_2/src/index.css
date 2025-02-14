@@ -5,12 +5,62 @@
 @theme {
   --font-roboto: "Roboto", sans-serif;
   --font-roadrage: "Road Rage";
+  --font-Jeju: "JejuMyeongjo";
 
+  --color-background: #02191d;
   --color-white: #ffffff;
   --color-dark: #0a0c11;
   --color-green: #052f35;
   --color-lightgreen: #05252c;
+  --color-lightergreen: #07373f;
+  --color-bordergreen: #052228;
+  --color-cardbackground: #12464e;
   --color-blue: #0e464f;
+  --color-nextblue: #24a0b5;
+  --color-ticketsel: #08252b;
   --color-lightblue: #197686;
   --color-lemon: #d5ea00;
+}
+
+@font-face {
+  font-family: JejuMyeongjo;
+  src: url(./fonts/JejuMyeongjo.ttf.woff);
+}
+
+@layer components {
+  .gradient {
+    background: linear-gradient(150deg, #07373f, #02191d);
+  }
+
+  .progress-container {
+    width: 100%;
+    height: 4px;
+    background-color: #0e464f; /* Light blue background */
+    border-radius: 5px; /* Rounded corners */
+    overflow: hidden; /* Ensures the inner bar stays within the container */
+  }
+
+  .progress-bar1 {
+    width: 33.33%;
+    height: 100%;
+    background-color: #24a0b5; /* Teal color (matches your gradient) */
+    border-radius: 5px; /* Rounded corners */
+    transition: width 0.3s ease; /* Smooth animation for progress changes */
+  }
+
+  .progress-bar2 {
+    width: 66.66%;
+    height: 100%;
+    background-color: #24a0b5; /* Teal color (matches your gradient) */
+    border-radius: 5px; /* Rounded corners */
+    transition: width 0.3s ease; /* Smooth animation for progress changes */
+  }
+
+  .progress-bar3 {
+    width: 100%;
+    height: 100%;
+    background-color: #24a0b5; /* Teal color (matches your gradient) */
+    border-radius: 5px; /* Rounded corners */
+    transition: width 0.3s ease; /* Smooth animation for progress changes */
+  }
 }

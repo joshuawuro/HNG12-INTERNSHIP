@@ -1,8 +1,10 @@
+import TicketSelection from "../components/TicketSelection";
+
 function MyTicket() {
   return (
-    <>
-      <h1>MyTicket</h1>
-    </>
+    <div className="max-w-[700px] m-auto relative top-10  ">
+      <TicketSelection />
+    </div>
   );
 }
 
