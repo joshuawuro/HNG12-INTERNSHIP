@@ -1,148 +1,159 @@
 import React, { useState } from "react";
-import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage } from "@cloudinary/react";
-import { auto } from "@cloudinary/url-gen/actions/resize";
-import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
+import ProgressBar2 from "./ProgressBar2";
+import { handleFileUpload } from "./handleFileUpload"; // Import the function
+import { useNavigate } from "react-router-dom"; // For navigation
 
-function AttendeeDetails() {
-  // Store the selected file and the transformed Cloudinary image
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [cloudinaryImage, setCloudinaryImage] = useState(null);
+const AttendeeDetails = ({ onBack }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("hello@avioflagos.io"); // Prefilled email
+  const [specialRequest, setSpecialRequest] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [error, setError] = useState(""); // For error messages
+  const navigate = useNavigate(); // For navigation
 
-  // Handle file selection
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // Upload to Cloudinary
-  const handleUpload = async () => {
-    if (!selectedFile) return;
-
-    // 1) Prepare form data
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    // Use the unsigned preset you created in the Cloudinary console
-    formData.append("upload_preset", "my_unsigned_preset");
-
-    try {
-      // 2) Send file to Cloudinary
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/du6mvkngk/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
+    // Validate form fields
+    if (!name || !email || !imageUrl) {
+      setError(
+        "Please fill in all required fields and upload a profile photo."
       );
-      const data = await response.json();
-
-      // data.public_id => The unique identifier Cloudinary assigns to your image
-
-      // 3) Create a Cloudinary instance & transform the uploaded image
-      const cld = new Cloudinary({
-        cloud: {
-          cloudName: "du6mvkngk", // Your cloud name
-        },
-      });
-
-      // Build a Cloudinary image object with transformations
-      const uploadedImage = cld
-        .image(data.public_id)
-        .format("auto")
-        .quality("auto")
-        .resize(auto().gravity(autoGravity()).width(500).height(500));
-
-      setCloudinaryImage(uploadedImage);
-    } catch (error) {
-      console.error("Upload error:", error);
+      return;
     }
+
+    // Log attendee details
+    console.log("Attendee Details:", {
+      name,
+      email,
+      specialRequest,
+      profilePhoto,
+    });
+
+    // Simulate a successful submission
+    alert("Ticket reserved successfully!");
+
+    // Redirect to the next page
+    navigate("/ticket-confirmation"); // Replace with your desired route
   };
 
   return (
-    <div className="min-h-screen bg-[#0C2D32] flex items-center justify-center p-6">
-      <div className="w-full max-w-md bg-[#132E33] text-white p-6 rounded-md shadow-lg">
-        {/* Header: Title + Step Indicator */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-xl font-semibold">Attendee Details</h1>
-          <span className="text-sm opacity-75">Step 2/3</span>
-        </div>
+    <div className="bg-lighterblue border-1 border-blue text-white p-6 rounded-2xl max-w-[500px] mx-auto">
+      <ProgressBar2 />
 
+      <form onSubmit={handleSubmit}>
         {/* Upload Profile Photo */}
-        <div className="mb-6">
-          <label className="block mb-2 font-medium">Upload Profile Photo</label>
-          <div className="border-2 border-dashed border-gray-500 rounded-md p-6 text-center">
-            <p className="text-gray-300 mb-3">Drag &amp; drop or click below</p>
-            <input
-              type="file"
-              onChange={handleFileChange}
-              className="w-full text-sm text-gray-300 file:mr-4 file:py-2 
-                         file:px-4 file:rounded file:border-0 file:bg-[#1A3A3F] 
-                         file:text-gray-300 hover:file:bg-gray-600 cursor-pointer"
-            />
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">
+            Upload Profile Photo *
+          </label>
+          <div className="border-2 border-dashed border-lightblue p-4 rounded-lg text-center">
+            {uploading ? (
+              <p className="text-sm text-gray-500">Uploading...</p>
+            ) : imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="Profile Preview"
+                className="w-60 h-60 rounded-full mx-auto object-cover"
+              />
+            ) : (
+              <>
+                <p className="mb-2">Drag & drop or click to upload</p>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      handleFileUpload(
+                        e.target.files[0],
+                        setUploading,
+                        setImageUrl,
+                        setProfilePhoto
+                      );
+                    }
+                  }}
+                  className="hidden"
+                  id="profilePhoto"
+                  required
+                />
+                <label
+                  htmlFor="profilePhoto"
+                  className="cursor-pointer bg-nextblue text-white px-4 py-2 rounded-lg"
+                >
+                  Upload Photo
+                </label>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Upload Button */}
-        <button
-          onClick={handleUpload}
-          className="mb-6 px-4 py-2 w-full rounded-md bg-[#02ECDB] text-black font-semibold 
-                     hover:opacity-90 transition"
-        >
-          Upload to Cloudinary
-        </button>
+        {/* Name */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">
+            Enter your name *
+          </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full p-2 rounded-md bg-background border border-lightergreen"
+            required // Make the field mandatory
+          />
+        </div>
 
-        {/* Preview the uploaded image (if any) */}
-        {cloudinaryImage && (
-          <div className="mb-6 text-center">
-            <p className="mb-2">Uploaded Image Preview:</p>
-            <AdvancedImage cldImg={cloudinaryImage} />
-          </div>
-        )}
-
-        {/* Email Input */}
-        <div className="mb-6">
-          <label className="block mb-2 font-medium" htmlFor="email">
+        {/* Email */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">
             Enter your email *
           </label>
           <input
             type="email"
-            id="email"
-            placeholder="hello@avioflags.io"
-            className="w-full p-2 rounded-md bg-[#1A3A3F] text-white placeholder-gray-400 
-                       focus:outline-none focus:ring-2 focus:ring-[#1A3A3F]"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-2 rounded-md bg-background border border-lightergreen"
+            required // Make the field mandatory
           />
         </div>
 
-        {/* Special Request Textarea */}
-        <div className="mb-6">
-          <label className="block mb-2 font-medium" htmlFor="specialRequest">
+        {/* Special Request */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">
             Special request?
           </label>
           <textarea
-            id="specialRequest"
-            rows="3"
-            className="w-full p-2 rounded-md bg-[#1A3A3F] text-white placeholder-gray-400 
-                       focus:outline-none focus:ring-2 focus:ring-[#1A3A3F]"
+            value={specialRequest}
+            onChange={(e) => setSpecialRequest(e.target.value)}
+            className="w-full p-2 rounded-md bg-background border border-lightergreen"
+            rows="4"
           />
         </div>
 
-        {/* Action Buttons */}
+        {/* Error Message */}
+        {error && (
+          <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+        )}
+
+        {/* Buttons */}
         <div className="flex justify-between">
           <button
-            className="px-4 py-2 rounded-md border border-gray-400 text-gray-300 
-                             hover:bg-gray-700 transition"
+            type="button"
+            onClick={onBack}
+            className="px-4 py-2 rounded-lg text-nextblue border border-nextblue"
           >
             Back
           </button>
           <button
-            className="px-4 py-2 rounded-md bg-[#02ECDB] text-black font-semibold 
-                             hover:opacity-90 transition"
+            type="submit"
+            className="px-4 py-2 bg-nextblue rounded-lg text-white"
           >
             Get My Free Ticket
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
-}
+};
 
 export default AttendeeDetails;
