@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TicketSelection from "./TicketSelection";
-import AttendeeDetails from "./AttendeeDetails"; // Assuming you have this component
+import AttendeeDetails from "./AttendeeDetails"; // Assuming this component exists
 
 const EventRegistration = () => {
   const [showAttendeeDetails, setShowAttendeeDetails] = useState(false);
